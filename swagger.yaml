@@ -1,0 +1,82 @@
+swagger: '2.0'
+info:
+  title: 'Perfetto API'
+  version: '1.0.0'
+paths:
+  /signup:
+    post:
+      summary: 'Создает нового пользователя или ищет существующего пользователя по номеру телефона.'
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: 'JSON объект с номером телефона пользователя.'
+          required: true
+          schema:
+            type: object
+            properties:
+              phone_number:
+                type: string
+      responses:
+        200:
+          description: 'Успешный ответ'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: 'Сгенерированный OTP-код. Присутсивует до добавление смс-сервиса'
+          examples:
+            application/json:
+              message: '123456'
+        422:
+          description: 'Ошибка валидации или другие ошибки'
+  /login:
+    post:
+      summary: 'Авторизует пользователя с помощью номера телефона и OTP-кода.'
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: 'JSON объект с номером телефона и OTP-кодом пользователя.'
+          required: true
+          schema:
+            type: object
+            properties:
+              phone_number:
+                type: string
+              code:
+                type: string
+      responses:
+        200:
+          description: 'Успешный ответ'
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                description: 'Токен доступа'
+              refresh_token:
+                type: string
+                description: 'Токен обновления'
+              new_user:
+                type: boolean
+                description: 'Признак нового пользователя'
+          examples:
+            application/json:
+              token: 'access_token'
+              refresh_token: 'refresh_token'
+              new_user: true
+        401:
+          description: 'Ошибка авторизации'
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: 'Сообщение об ошибке'
+          examples:
+            application/json:
+              error: 'Invalid code'
