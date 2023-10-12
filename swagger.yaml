@@ -117,6 +117,30 @@ paths:
                   birthday: '1990-01-01'
                   email: 'john@example.com'
                   verified_email: true
+    post:
+      summary: Установка данных профиля пользователя
+      description: Создает информацию о профиле текущего пользователя.
+      tags:
+        - Профиль пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfoUpdate'
+            examples:
+              example1:
+                value:
+                  first_name: 'Jane'
+                  country: 'Canada'
+                  city: 'Toronto'
+                  birthday: '1995-02-15'
+                  email: 'jane@example.com'
+      responses:
+        '200':
+          description: Данные профиля успешно созданы
+        '400':
+          description: Некорректный запрос
     put:
       summary: Обновление данных профиля пользователя
       description: Обновляет информацию о профиле текущего пользователя.
@@ -161,13 +185,4 @@ components:
         city:
           type: string
           description: Город пользователя
-        email:
-          type: string
-          description: Почта пользователя
-        email_verified:
-          type: boolean
-          description: Почта подтверждена
-        birthday:
-          type: string
-          description: Дата рождения
 
