@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  title: API профиля пользователя
+  title: API Мобильного приложения
   version: 1.0.0
-  description: API для управления данными профиля пользователя.
+  description: API Мобильного приложения
 
 paths:
   /signup:
@@ -23,15 +23,18 @@ paths:
       responses:
         200:
           description: 'Успешный ответ'
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                description: 'Сгенерированный OTP-код. Присутсивует до добавление смс-сервиса'
-          examples:
+          content:
             application/json:
-              message: '123456'
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'Сгенерированный OTP-код. Присутствует до добавления смс-сервиса'
+              examples:
+                example1:
+                  value:
+                    message: '123456'
         422:
           description: 'Ошибка валидации или другие ошибки'
   /login:
@@ -54,34 +57,40 @@ paths:
       responses:
         200:
           description: 'Успешный ответ'
-          schema:
-            type: object
-            properties:
-              token:
-                type: string
-                description: 'Токен доступа'
-              refresh_token:
-                type: string
-                description: 'Токен обновления'
-              new_user:
-                type: boolean
-                description: 'Признак нового пользователя'
-          examples:
+          content:
             application/json:
-              token: 'access_token'
-              refresh_token: 'refresh_token'
-              new_user: true
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: 'Токен доступа'
+                  refresh_token:
+                    type: string
+                    description: 'Токен обновления'
+                  new_user:
+                    type: boolean
+                    description: 'Признак нового пользователя'
+              examples:
+                example1:
+                  value:
+                    token: 'access_token'
+                    refresh_token: 'refresh_token'
+                    new_user: true
         401:
           description: 'Ошибка авторизации'
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: 'Сообщение об ошибке'
-          examples:
+          content:
             application/json:
-              error: 'Invalid code'
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Сообщение об ошибке'
+              examples:
+                example1:
+                  value:
+                    error: 'Invalid code'
   /user:
     get:
       summary: Получение данных профиля пользователя
@@ -95,7 +104,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserInfo'
-    post:
+              examples:
+                example1:
+                  value:
+                    user_id: 123
+                    first_name: 'John'
+                    country: 'USA'
+                    city: 'New York'
+                    birthday: '1990-01-01'
+                    email: 'john@example.com'
+                    verified_email: true
+    put:
       summary: Обновление данных профиля пользователя
       description: Обновляет информацию о профиле текущего пользователя.
       tags:
@@ -106,11 +125,21 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserInfoUpdate'
+            examples:
+              example1:
+                value:
+                  first_name: 'Jane'
+                  country: 'Canada'
+                  city: 'Toronto'
+                  birthday: '1995-02-15'
+                  email: 'jane@example.com'
       responses:
         '200':
           description: Данные профиля успешно обновлены
         '400':
           description: Некорректный запрос
+    security:
+      - BearerAuth: []
 
 components:
   schemas:
@@ -169,3 +198,8 @@ components:
           type: string
           format: email
           description: Email пользователя
+
+securitySchemes:
+  BearerAuth:
+    type: http
+    scheme: bearer
