@@ -3,25 +3,25 @@ info:
   title: API Мобильного приложения
   version: 1.0.0
   description: API Мобильного приложения
-
 paths:
   /signup:
     post:
       summary: 'Создает нового пользователя или ищет существующего пользователя по номеру телефона.'
-      consumes:
-        - application/json
-      parameters:
-        - in: body
-          name: body
-          description: 'JSON объект с номером телефона пользователя.'
-          required: true
-          schema:
-            type: object
-            properties:
-              phone_number:
-                type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone_number:
+                  type: string
+            examples:
+              example1:
+                value:
+                  phone_number: '1234567890'
       responses:
-        200:
+        '200':
           description: 'Успешный ответ'
           content:
             application/json:
@@ -31,31 +31,35 @@ paths:
                   message:
                     type: string
                     description: 'Сгенерированный OTP-код. Присутствует до добавления смс-сервиса'
-              examples:
-                example1:
-                  value:
-                    message: '123456'
-        422:
+
+            examples:
+              example1:
+                value:
+                  message: '123456'
+
+        '422':
           description: 'Ошибка валидации или другие ошибки'
   /login:
     post:
       summary: 'Авторизует пользователя с помощью номера телефона и OTP-кода.'
-      consumes:
-        - application/json
-      parameters:
-        - in: body
-          name: body
-          description: 'JSON объект с номером телефона и OTP-кодом пользователя.'
-          required: true
-          schema:
-            type: object
-            properties:
-              phone_number:
-                type: string
-              code:
-                type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone_number:
+                  type: string
+                code:
+                  type: string
+            examples:
+              example1:
+                value:
+                  phone_number: '1234567890'
+                  code: '123456'
       responses:
-        200:
+        '200':
           description: 'Успешный ответ'
           content:
             application/json:
@@ -71,13 +75,13 @@ paths:
                   new_user:
                     type: boolean
                     description: 'Признак нового пользователя'
-              examples:
-                example1:
-                  value:
-                    token: 'access_token'
-                    refresh_token: 'refresh_token'
-                    new_user: true
-        401:
+            examples:
+              example1:
+                value:
+                  token: 'access_token'
+                  refresh_token: 'refresh_token'
+                  new_user: true
+        '401':
           description: 'Ошибка авторизации'
           content:
             application/json:
@@ -86,7 +90,6 @@ paths:
                 properties:
                   error:
                     type: string
-                    description: 'Сообщение об ошибке'
               examples:
                 example1:
                   value:
@@ -104,16 +107,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserInfo'
-              examples:
-                example1:
-                  value:
-                    user_id: 123
-                    first_name: 'John'
-                    country: 'USA'
-                    city: 'New York'
-                    birthday: '1990-01-01'
-                    email: 'john@example.com'
-                    verified_email: true
+            examples:
+              example1:
+                value:
+                  user_id: 123
+                  first_name: 'John'
+                  country: 'USA'
+                  city: 'New York'
+                  birthday: '1990-01-01'
+                  email: 'john@example.com'
+                  verified_email: true
     put:
       summary: Обновление данных профиля пользователя
       description: Обновляет информацию о профиле текущего пользователя.
@@ -158,48 +161,13 @@ components:
         city:
           type: string
           description: Город пользователя
-        birthday:
-          type: string
-          format: date
-          description: Дата рождения пользователя
         email:
           type: string
-          format: email
-          description: Email пользователя
-        verified_email:
+          description: Почта пользователя
+        email_verified:
           type: boolean
-          description: Флаг подтверждения email
-      required:
-        - user_id
-        - first_name
-        - country
-        - city
-        - birthday
-        - email
-        - verified_email
-
-    UserInfoUpdate:
-      type: object
-      properties:
-        first_name:
-          type: string
-          description: Имя пользователя
-        country:
-          type: string
-          description: Страна пользователя
-        city:
-          type: string
-          description: Город пользователя
+          description: Почта подтверждена
         birthday:
           type: string
-          format: date
-          description: Дата рождения пользователя
-        email:
-          type: string
-          format: email
-          description: Email пользователя
+          description: Дата рождения
 
-securitySchemes:
-  BearerAuth:
-    type: http
-    scheme: bearer
