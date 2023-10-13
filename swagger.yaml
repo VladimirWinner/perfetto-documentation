@@ -6,7 +6,10 @@ info:
 paths:
   /signup:
     post:
-      summary: 'Создает нового пользователя или ищет существующего пользователя по номеру телефона.'
+      summary: Создает нового пользователя или ищет существующего пользователя по номеру телефона.
+      description: Возвращает одноразовый код
+      tags:
+        - Регистрация и авторизация
       requestBody:
         required: true
         content:
@@ -41,7 +44,10 @@ paths:
           description: 'Ошибка валидации или другие ошибки'
   /login:
     post:
-      summary: 'Авторизует пользователя с помощью номера телефона и OTP-кода.'
+      summary: Авторизует пользователя с помощью номера телефона и OTP-кода.
+      description: Возвращает заголовки с токенами доступа и обновления
+      tags:
+        - Аутентификация
       requestBody:
         required: true
         content:
@@ -173,7 +179,7 @@ paths:
       summary: Получение информации для главной страницы
       description: Данные о товарах и акциях для главной страницы
       tags:
-        - Главная страница
+        - Главная страница(в разработке)
       responses:
         '200':
           description: 'Успешный ответ'
@@ -235,6 +241,19 @@ paths:
                               old_price:
                               image: 'url_изображения_продукта_4'
                               promotions: [ ]
+  /category:
+    get:
+      summary: Получение данных о категориях
+      description: Возвращает информацию о всех доступных категориях
+      tags:
+        - Категории товаров
+      responses:
+        '200':
+          description: Данные профиля успешно получены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
 
 components:
   schemas:
@@ -353,3 +372,12 @@ components:
                             type: string
                           description:
                             type: string
+    Category:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
