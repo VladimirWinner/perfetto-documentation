@@ -168,6 +168,74 @@ paths:
     security:
       - BearerAuth: []
 
+  /main:
+    get:
+      summary: Получение информации для главной страницы
+      description: Данные о товарах и акциях для главной страницы
+      tags:
+        - Главная страница
+      responses:
+        '200':
+          description: 'Успешный ответ'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MainPage'
+              examples:
+                example1:
+                  value:
+                    mainPage:
+                      banners:
+                        - id: 1
+                          title: 'Заголовок баннера'
+                          image: 'url_изображения_баннера'
+                          link: 'ссылка_баннера'
+                        - id: 2
+                          title: 'Другой баннер'
+                          image: 'url_изображения_другого_баннера'
+                          link: 'ссылка_другого_баннера'
+                      categories:
+                        - id: 1
+                          name: 'Категория 1'
+                          products:
+                            - id: 1
+                              name: 'Название продукта 1'
+                              description: 'Описание продукта 1'
+                              price: 19.99
+                              old_price: 29.99
+                              images: ['url_изображения_продукта_1_1', 'url_изображения_продукта_1_2']
+                              promotions:
+                                - id: 1
+                                  title: 'Акция 1'
+                                  description: 'Описание акции 1'
+                            - id: 2
+                              name: 'Название продукта 2'
+                              description: 'Описание продукта 2'
+                              price: 24.99
+                              old_price: 29.99
+                              images: ['url_изображения_продукта_2_1', 'url_изображения_продукта_2_2']
+                              promotions: [ ]
+                        - id: 2
+                          name: 'Категория 2'
+                          products:
+                            - id: 3
+                              name: 'Название продукта 3'
+                              description: 'Описание продукта 3'
+                              price: 14.99
+                              old_price: 19.99
+                              images: ['url_изображения_продукта_3_1', 'url_изображения_продукта_3_2']
+                              promotions:
+                                - id: 2
+                                  title: 'Акция 2'
+                                  description: 'Описание акции 2'
+                            - id: 4
+                              name: 'Название продукта 4'
+                              description: 'Описание продукта 4'
+                              price: 29.99
+                              old_price:
+                              image: 'url_изображения_продукта_4'
+                              promotions: [ ]
+
 components:
   schemas:
     UserInfo:
@@ -225,3 +293,63 @@ components:
           type: string
           format: email
           description: Email пользователя
+
+    MainPage:
+      type: object
+      properties:
+        banners:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Идентификатор баннера
+              title:
+                type: string
+                description: Текст на банере
+              image:
+                type: string
+                description: url изображения
+              link:
+                type: string
+                description: линка
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              products:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: number
+                    old_price:
+                      type: number
+                    images:
+                      type: array
+                      items:
+                        type: string
+                    promotions:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          description:
+                            type: string
