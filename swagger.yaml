@@ -254,9 +254,76 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Category'
+  /product/{product_id}:
+    get:
+      summary: Получение данных о товаре
+      description: Возвращает информацию о товаре и все связанные данные
+      tags:
+        - Товар
+      responses:
+        '200':
+          description: Данные профиля успешно получены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
 
 components:
   schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        old_price:
+          type: number
+        article:
+          type: string
+        season:
+          type: string
+        colors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Color'
+    Color:
+      type: object
+      properties:
+        id:
+          type: integer
+        color:
+          type: string
+        sizes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Size'
+        photos:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductPhoto'
+    Size:
+      type: object
+      properties:
+        id:
+          type: integer
+        size:
+          type: integer
+        quantity:
+          type: integer
+    ProductPhoto:
+      type: object
+      properties:
+        thumb:
+          type: string
+        small_thumb:
+          type: string
+        original:
+          type: string
     UserInfo:
       type: object
       properties:
