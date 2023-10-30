@@ -375,6 +375,49 @@ paths:
                   - { id: 3, name: "Catimors Colombia Villa Sarchi", price: "123.0", old_price: null, colors: [ { id: "21", color: "#FFFF0", photos: [ small_thumb: 'https://image.com/123/123/123', original: 'https://image.com/123/123/123', thumb: 'https://image.com/123/123/123'] }, { id: "22", color: "#FFFF0" }, { id: "23", color: "#FFFF0" }, { id: "24", color: "#FFFF0" }, { id: "25", color: "#FFFF0" }, { id: "26", color: "#FFFF0" }, { id: "27", color: "#FFFF0" }, { id: "28", color: "#FFFF0" }, { id: "29", color: "#FFFF0" }, { id: "30", color: "#FFFF0" } ] }
                   - { id: 20, name: "Java Dilla SL28", price: "123.0", old_price: null, colors: [ { id: "191", color: "#FFFF0", photos: [ small_thumb: 'https://image.com/123/123/123', original: 'https://image.com/123/123/123', thumb: 'https://image.com/123/123/123'] }, { id: "192", color: "#FFFF0" }, { id: "193", color: "#FFFF0" }, { id: "194", color: "#FFFF0" }, { id: "195", color: "#FFFF0" }, { id: "196", color: "#FFFF0" }, { id: "197", color: "#FFFF0" }, { id: "198", color: "#FFFF0" }, { id: "199", color: "#FFFF0" }, { id: "200", color: "#FFFF0" } ] }
                   - { id: 21, name: "Liberica Pacamara Java", price: "123.0", old_price: null, colors: [ { id: "201", color: "#FFFF0", photos: [ small_thumb: 'https://image.com/123/123/123', original: 'https://image.com/123/123/123', thumb: 'https://image.com/123/123/123'] }, { id: "202", color: "#FFFF0" }, { id: "203", color: "#FFFF0" }, { id: "204", color: "#FFFF0" }, { id: "205", color: "#FFFF0" }, { id: "206", color: "#FFFF0" }, { id: "207", color: "#FFFF0" }, { id: "208", color: "#FFFF0" }, { id: "209", color: "#FFFF0" }, { id: "210", color: "#FFFF0" } ] }
+  /favourites:
+    get:
+      summary: 'Получить избранные товары'
+      tags:
+        - Избранные товары
+      description: 'Возвращает список избранных товаров.'
+      responses:
+        '200':
+          description: 'Успешный ответ'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CardProduct'
+    post:
+      summary: 'Добавить товар в избранное'
+      tags:
+        - Избранные товары
+      description: 'Добавление товара в избранное'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_id:
+                  type: string
+                color_id:
+                  type: string
+                size_id:
+                  type: string
+            examples:
+              example1:
+                value:
+                  product_id: '1'
+                  color_id: '1'
+                  size_id: '1'
+      responses:
+        '201':
+          description: 'Успешный ответ'
+
 
 components:
   schemas:
@@ -399,6 +442,33 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Color'
+    CardProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
+        old_price:
+          type: number
+        colors:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardColor'
+    CardColor:
+      type: object
+      properties:
+        id:
+          type: integer
+        color:
+          type: string
+        photos:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductPhoto'
+
     Color:
       type: object
       properties:
@@ -420,8 +490,6 @@ components:
         id:
           type: integer
         size:
-          type: integer
-        quantity:
           type: integer
     ProductPhoto:
       type: object
