@@ -383,13 +383,11 @@ paths:
       description: 'Возвращает список избранных товаров.'
       responses:
         '200':
-          description: 'Успешный ответ'
+          description: Успешный ответ
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CardProduct'
+                $ref: '#/components/schemas/FavoriteResponse'
     post:
       summary: 'Добавить товар в избранное'
       tags:
@@ -421,6 +419,17 @@ paths:
 
 components:
   schemas:
+    FavoriteResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardProduct'
+        viewed_products:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardProduct'
     Product:
       type: object
       properties:
