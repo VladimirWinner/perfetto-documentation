@@ -274,30 +274,36 @@ paths:
                     example: "123.0"
                   old_price:
                     type: null
+                  current_color:
+                    properties:
+                      id:
+                        type: string
+                        example: "19"
+                      color:
+                        type: string
+                        example: "#FFFF0"
+                  sizes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "91"
+                        size:
+                          type: integer
+                          example: 43
                   colors:
                     type: array
                     items:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                            example: "19"
-                          color:
-                            type: string
-                            example: "#FFFF0"
-                          sizes:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                id:
-                                  type: string
-                                  example: "91"
-                                size:
-                                  type: integer
-                                  example: 43
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "19"
+                        color:
+                          type: string
+                          example: "#FFFF0"
                   description:
                     type: string
                     example: "test product"
@@ -307,58 +313,76 @@ paths:
                   season:
                     type: string
                     example: "Весна-Лето_ru"
-                  viewed_products:
+                  photos:
                     type: array
                     items:
                       type: object
                       properties:
-                        id:
-                          type: integer
-                          example: 3
-                        name:
+                        small_thumb:
                           type: string
-                          example: "Catimors Colombia Villa Sarchi"
-                        price:
+                          example: 'https://image.com/123/123/123'
+                        original:
                           type: string
-                          example: "123.0"
-                        old_price:
-                          type: null
-                        colors:
-                          type: array
-                          items:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                id:
-                                  type: string
-                                  example: "21"
-                                color:
-                                  type: string
-                                  example: "#FFFF0"
-                                photos:
-                                  type: array
-                                  items:
-                                    type: array
-                                    items:
-                                      type: object
-                                      properties:
-                                        small_thumb:
-                                          type: string
-                                          example: 'https://image.com/123/123/123'
-                                        original:
-                                          type: string
-                                          example: 'https://image.com/123/123/123'
-                                        thumb:
-                                          type: string
-                                          example: 'https://image.com/123/123/123'
+                          example: 'https://image.com/123/123/123'
+                        thumb:
+                          type: string
+                          example: 'https://image.com/123/123/123'
+#                  viewed_products:
+#                    type: array
+#                    items:
+#                      type: object
+#                      properties:
+#                        id:
+#                          type: integer
+#                          example: 3
+#                        name:
+#                          type: string
+#                          example: "Catimors Colombia Villa Sarchi"
+#                        price:
+#                          type: string
+#                          example: "123.0"
+#                        old_price:
+#                          type: null
+#                        colors:
+#                          type: array
+#                          items:
+#                            type: array
+#                            items:
+#                              type: object
+#                              properties:
+#                                id:
+#                                  type: string
+#                                  example: "21"
+#                                color:
+#                                  type: string
+#                                  example: "#FFFF0"
+#                                photos:
+#                                  type: array
+#                                  items:
+#                                    type: array
+#                                    items:
+#                                      type: object
+#                                      properties:
+#                                        small_thumb:
+#                                          type: string
+#                                          example: 'https://image.com/123/123/123'
+#                                        original:
+#                                          type: string
+#                                          example: 'https://image.com/123/123/123'
+#                                        thumb:
+#                                          type: string
+#                                          example: 'https://image.com/123/123/123'
               example:
                 id: 2
                 name: "Colombia Sumatara Dilla"
                 price: "123.0"
-                old_price: null
+                old_price: "200.0"
+                sizes: [ { id: "91", size: 43 }, { id: "92", size: 44 }, { id: "93", size: 58 }, { id: "94", size: 53 }, { id: "95", size: 41 } ]
+                current_color:
+                  id: "19"
+                  color: "#FFFF0"
+                photos: [ {small_thumb: 'https://image.com/123/123/123', original: 'https://image.com/123/123/123', thumb: 'https://image.com/123/123/123'}, {small_thumb: 'https://image.com/321/321/321', original: 'https://image.com/321/321/321', thumb: 'https://image.com/321/321/321'}]
                 colors:
-                  - - { id: "19", color: "#FFFF0", sizes: [ { id: "91", size: 43 }, { id: "92", size: 44 }, { id: "93", size: 58 }, { id: "94", size: 53 }, { id: "95", size: 41 } ], photos: [ small_thumb: 'https://image.com/123/123/123', original: 'https://image.com/123/123/123', thumb: 'https://image.com/123/123/123'] }
                     - { id: "11", color: "#FFFF0" }
                     - { id: "13", color: "#FFFF0" }
                     - { id: "14", color: "#FFFF0" }
@@ -371,10 +395,104 @@ paths:
                 description: "test product"
                 article: "521236"
                 season: "Весна-Лето_ru"
-                viewed_products:
-                  - { id: 3, name: "Catimors Colombia Villa Sarchi", price: "123.0", old_price: null, colors: [ { id: "21", color: "#FFFF0", photos: [ small_thumb: 'https://image.com/123/123/123', original: 'https://image.com/123/123/123', thumb: 'https://image.com/123/123/123'] }, { id: "22", color: "#FFFF0" }, { id: "23", color: "#FFFF0" }, { id: "24", color: "#FFFF0" }, { id: "25", color: "#FFFF0" }, { id: "26", color: "#FFFF0" }, { id: "27", color: "#FFFF0" }, { id: "28", color: "#FFFF0" }, { id: "29", color: "#FFFF0" }, { id: "30", color: "#FFFF0" } ] }
-                  - { id: 20, name: "Java Dilla SL28", price: "123.0", old_price: null, colors: [ { id: "191", color: "#FFFF0", photos: [ small_thumb: 'https://image.com/123/123/123', original: 'https://image.com/123/123/123', thumb: 'https://image.com/123/123/123'] }, { id: "192", color: "#FFFF0" }, { id: "193", color: "#FFFF0" }, { id: "194", color: "#FFFF0" }, { id: "195", color: "#FFFF0" }, { id: "196", color: "#FFFF0" }, { id: "197", color: "#FFFF0" }, { id: "198", color: "#FFFF0" }, { id: "199", color: "#FFFF0" }, { id: "200", color: "#FFFF0" } ] }
-                  - { id: 21, name: "Liberica Pacamara Java", price: "123.0", old_price: null, colors: [ { id: "201", color: "#FFFF0", photos: [ small_thumb: 'https://image.com/123/123/123', original: 'https://image.com/123/123/123', thumb: 'https://image.com/123/123/123'] }, { id: "202", color: "#FFFF0" }, { id: "203", color: "#FFFF0" }, { id: "204", color: "#FFFF0" }, { id: "205", color: "#FFFF0" }, { id: "206", color: "#FFFF0" }, { id: "207", color: "#FFFF0" }, { id: "208", color: "#FFFF0" }, { id: "209", color: "#FFFF0" }, { id: "210", color: "#FFFF0" } ] }
+  /products/{product_id}/review_infos:
+    get:
+      tags:
+        - Информация о товаре
+      summary: Информация об отзывах о товаре
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewResponse'
+  /products/{product_id}/reviews:
+    get:
+      tags:
+        - Информация о товаре
+      summary: Получение отзывов о продукте
+      description: Возвращает список отзывов о продукте по его идентификатору
+      parameters:
+        - name: product_id
+          in: path
+          description: Идентификатор продукта
+          required: true
+          schema:
+            type: integer
+          example: 1
+        - name: page
+          in: query
+          description: Номер страницы
+          required: false
+          schema:
+            type: integer
+          example: 1
+        - name: per_page
+          in: query
+          description: Количество элементов на странице
+          required: false
+          schema:
+            type: integer
+          example: 10
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+    post:
+      tags:
+        - Информация о товаре
+      summary: Создание нового отзыва
+      description: Создает новый отзыв о продукте.
+      parameters:
+        - name: product_id
+          in: path
+          description: Идентификатор продукта
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        description: Данные нового отзыва
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: Текст отзыва
+                rating:
+                  type: integer
+                  description: Рейтинг товара (обязательное поле)
+                photos:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ReviewPhoto'
+      responses:
+        '201':
+          description: Отзыв успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '422':
+          description: Неверный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Описание ошибки
+
   /favourites:
     get:
       summary: 'Получить избранные товары'
@@ -633,3 +751,53 @@ components:
             type: integer
           name:
             type: string
+    ReviewResponse:
+      type: object
+      properties:
+        average_rating:
+          type: number
+          description: Средний рейтинг
+          example: 4.5
+        count:
+          type: integer
+          description: Количество отзывов
+          example: 42
+        photos:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewPhoto'
+
+    ReviewPhoto:
+      type: object
+      properties:
+        thumb:
+          type: string
+          description: URL миниатюры фотографии
+        small_thumb:
+          type: string
+          description: URL небольшой миниатюры фотографии
+        original:
+          type: string
+          description: URL оригинальной фотографии
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Идентификатор отзыва
+        rating:
+          type: integer
+          description: Рейтинг
+        text:
+          type: string
+          description: Текст отзыва
+        created_at:
+          type: string
+          description: Дата создания отзыва
+        user:
+          type: string
+          description: Имя пользователя
+        photos:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewPhoto'
