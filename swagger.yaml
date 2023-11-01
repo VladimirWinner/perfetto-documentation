@@ -474,7 +474,9 @@ paths:
                 photos:
                   type: array
                   items:
-                    $ref: '#/components/schemas/ReviewPhoto'
+                    type: string
+                    example: 'File Object'
+                    description: Загружаемое фото
       responses:
         '201':
           description: Отзыв успешно создан
