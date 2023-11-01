@@ -327,51 +327,6 @@ paths:
                         thumb:
                           type: string
                           example: 'https://image.com/123/123/123'
-#                  viewed_products:
-#                    type: array
-#                    items:
-#                      type: object
-#                      properties:
-#                        id:
-#                          type: integer
-#                          example: 3
-#                        name:
-#                          type: string
-#                          example: "Catimors Colombia Villa Sarchi"
-#                        price:
-#                          type: string
-#                          example: "123.0"
-#                        old_price:
-#                          type: null
-#                        colors:
-#                          type: array
-#                          items:
-#                            type: array
-#                            items:
-#                              type: object
-#                              properties:
-#                                id:
-#                                  type: string
-#                                  example: "21"
-#                                color:
-#                                  type: string
-#                                  example: "#FFFF0"
-#                                photos:
-#                                  type: array
-#                                  items:
-#                                    type: array
-#                                    items:
-#                                      type: object
-#                                      properties:
-#                                        small_thumb:
-#                                          type: string
-#                                          example: 'https://image.com/123/123/123'
-#                                        original:
-#                                          type: string
-#                                          example: 'https://image.com/123/123/123'
-#                                        thumb:
-#                                          type: string
-#                                          example: 'https://image.com/123/123/123'
               example:
                 id: 2
                 name: "Colombia Sumatara Dilla"
@@ -494,6 +449,48 @@ paths:
                   message:
                     type: string
                     description: Описание ошибки
+  /products/{product_id}/viewed:
+    get:
+      tags:
+        - Информация о товаре
+      summary: Получить просмотренные товары
+      description: Возвращает список товаров, которые пользователь просматривал. Исключает из списка продукт который сейчас просматривает пользователь
+      parameters:
+        - name: product_id
+          in: path
+          description: Идентификатор продукта
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '401':
+          description: Неавторизованный запрос
+  /viewed:
+    get:
+      tags:
+        - Просмотренные товары
+      summary: Получить просмотренные товары
+      description: Возвращает список товаров, которые пользователь просматривал.
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '401':
+          description: Неавторизованный запрос
 
   /favourites:
     get:
@@ -555,22 +552,57 @@ components:
       properties:
         id:
           type: integer
+          description: Идентификатор товара
         name:
           type: string
-        description:
-          type: string
+          description: Наименование товара
         price:
-          type: number
+          type: string
+          description: Цена товара
         old_price:
-          type: number
-        article:
           type: string
-        season:
-          type: string
+          description: Старая цена товара
+        sizes:
+          type: array
+          description: Размеры товара (массив)
+          items:
+            $ref: '#/components/schemas/Size'
+        photos:
+          type: array
+          description: Фотографии товара (массив)
+          items:
+            $ref: '#/components/schemas/ProductPhoto'
+        current_color:
+          type: object
+          description: Текущий цвет товара
+          properties:
+            id:
+              type: string
+              description: Идентификатор цвета
+            color:
+              type: string
+              description: Цвет товара
         colors:
           type: array
+          description: Доступные цвета товара (массив)
           items:
-            $ref: '#/components/schemas/Color'
+            type: object
+            properties:
+              id:
+                type: string
+                description: Идентификатор цвета
+              color:
+                type: string
+                description: Цвет товара
+        description:
+          type: string
+          description: Описание товара
+        article:
+          type: string
+          description: Артикул товара
+        season:
+          type: string
+          description: Сезон товара
     CardProduct:
       type: object
       properties:
