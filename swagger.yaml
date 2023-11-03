@@ -532,7 +532,144 @@ paths:
       responses:
         '201':
           description: 'Успешный ответ'
+  /carts:
+    get:
+      tags:
+        - Корзина товаров
+      summary: "Получить корзину пользователя"
+      description: "Получить корзину пользователя с использованием авторизации."
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: "Bearer-токен для аутентификации пользователя."
+          required: true
+          type: string
+          example: 'Bearer token'
+      responses:
+        200:
+          description: "Успешный ответ"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItem'
+        401:
+          description: "Неавторизованный доступ"
+    post:
+      tags:
+        - Корзина товаров
+      summary: "Добавить товар в корзину"
+      description: "Добавить товар в корзину пользователя с использованием авторизации."
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: "Bearer-токен для аутентификации пользователя."
+          required: true
+          type: string
+          example: 'Bearer token'
+        - name: product_id
+          in: formData
+          description: "Идентификатор товара"
+          required: true
+          type: integer
+          example: '1'
+        - name: color_id
+          in: formData
+          description: "Идентификатор цвета"
+          required: true
+          type: integer
+          example: '1'
+        - name: size_id
+          in: formData
+          description: "Идентификатор размера"
+          required: true
+          type: integer
+          example: '1'
+        - name: quantity
+          in: formData
+          description: "Количество товара"
+          required: true
+          type: integer
+          example: '1'
+      responses:
+        201:
+          description: "Товар успешно добавлен в корзину"
+        401:
+          description: "Неавторизованный доступ"
 
+  /carts/{cart_id}:
+    put:
+      tags:
+        - Корзина товаров
+      summary: "Обновить количество товара в корзине"
+      description: "Изменить количество товара в корзине пользователя с использованием авторизации."
+      produces:
+        - application/json
+      parameters:
+        - name: cart_id
+          in: path
+          description: "Идентификатор корзины"
+          required: true
+          type: integer
+          example: '1'
+        - name: Authorization
+          in: header
+          description: "Bearer-токен для аутентификации пользователя."
+          required: true
+          type: string
+          example: 'Bearer token'
+        - name: quantity
+          in: formData
+          description: "Новое количество товара"
+          required: true
+          type: integer
+          example: '2'
+      responses:
+        200:
+          description: "Успешное обновление"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItem'
+        401:
+          description: "Неавторизованный доступ"
+    delete:
+      tags:
+        - Корзина товаров
+      summary: "Удалить корзину"
+      description: "Удалить корзину пользователя с использованием авторизации."
+      produces:
+        - application/json
+      parameters:
+        - name: cart_id
+          in: path
+          description: "Идентификатор корзины"
+          required: true
+          type: integer
+          example: '1'
+        - name: Authorization
+          in: header
+          description: "Bearer-токен для аутентификации пользователя."
+          required: true
+          type: string
+          example: 'Bearer token'
+      responses:
+        200:
+          description: "Корзина успешно удалена"
+          schema:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: "Cart deleted"
+        401:
+          description: "Неавторизованный доступ"
 
 components:
   schemas:
@@ -835,3 +972,42 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ReviewPhoto'
+
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 3
+        name:
+          type: string
+          example: "Catimors Colombia Villa Sarchi"
+        price:
+          type: string
+          example: "123.0"
+        old_price:
+          type: null
+        sizes:
+          type: null
+        photos:
+          type: array
+          items:
+            $ref: "#/definitions/Photo"
+        current_color:
+          $ref: "#/definitions/Color"
+        colors:
+          type: array
+          items:
+            $ref: "#/definitions/Color"
+        description:
+          type: null
+        article:
+          type: null
+        season:
+          type: null
+        quantity:
+          type: integer
+          example: 5
+        cart_id:
+          type: integer
+          example: 5
