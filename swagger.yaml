@@ -670,6 +670,30 @@ paths:
                       example: "Cart deleted"
         401:
           description: "Неавторизованный доступ"
+  /shop_addresses:
+    get:
+      tags:
+        - Магазины
+      summary: "Получить список адресов магазинов"
+      description: "Получить список адресов магазинов с использованием авторизации."
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: "Bearer-токен для аутентификации пользователя."
+          required: true
+          type: string
+          example: 'Bearer token'
+      responses:
+        200:
+          description: "Успешно"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopAddress'
+        401:
+          description: "Неавторизованный доступ"
 
 components:
   schemas:
@@ -1035,3 +1059,15 @@ components:
         cart_id:
           type: integer
           example: 5
+    ShopAddress:
+      type: array
+      description: Доступные адресса магазинов (массив)
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: "Название магазина или улицы"
+          point:
+            type: string
+            description: "Координаты магазина в формате 'широта, долгота'"
