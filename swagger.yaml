@@ -978,33 +978,57 @@ components:
       properties:
         id:
           type: integer
-          example: 3
+          description: Идентификатор товара
         name:
           type: string
-          example: "Catimors Colombia Villa Sarchi"
+          description: Наименование товара
         price:
           type: string
-          example: "123.0"
+          description: Цена товара
         old_price:
-          type: null
+          type: string
+          description: Старая цена товара
         sizes:
-          type: null
+          type: array
+          description: Размеры товара (массив)
+          items:
+            $ref: '#/components/schemas/Size'
         photos:
           type: array
+          description: Фотографии товара (массив)
           items:
-            $ref: "#/definitions/Photo"
+            $ref: '#/components/schemas/ProductPhoto'
         current_color:
-          $ref: "#/definitions/Color"
+          type: object
+          description: Текущий цвет товара
+          properties:
+            id:
+              type: string
+              description: Идентификатор цвета
+            color:
+              type: string
+              description: Цвет товара
         colors:
           type: array
+          description: Доступные цвета товара (массив)
           items:
-            $ref: "#/definitions/Color"
+            type: object
+            properties:
+              id:
+                type: string
+                description: Идентификатор цвета
+              color:
+                type: string
+                description: Цвет товара
         description:
-          type: null
+          type: string
+          description: Описание товара
         article:
-          type: null
+          type: string
+          description: Артикул товара
         season:
-          type: null
+          type: string
+          description: Сезон товара
         quantity:
           type: integer
           example: 5
