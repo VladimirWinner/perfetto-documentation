@@ -250,6 +250,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Category'
+  /categories/{category_id}/:
+    get:
+      summary: Получение данных о товарах в категориях
+      description: Возвращает данные о товарах в категории
+      parameters:
+        - name: product_id
+          in: path
+          description: Идентификатор категории
+          required: true
+          schema:
+            type: integer
+          example: 1
+        - name: page
+          in: query
+          description: Номер страницы
+          required: false
+          schema:
+            type: integer
+          example: 1
+        - name: per_page
+          in: query
+          description: Количество элементов на странице
+          required: false
+          schema:
+            type: integer
+          example: 10
+      tags:
+        - Категории товаров
+      responses:
+        '200':
+          description: Данные о категории успешно получены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
   /products/{product_id}:
     get:
       tags:
@@ -532,6 +567,40 @@ paths:
       responses:
         '201':
           description: 'Успешный ответ'
+    delete:
+      tags:
+        - Избранные товары
+      summary: "Удалить из избранного"
+      description: "Удалить из избранного с использованием авторизации."
+      produces:
+        - application/json
+      parameters:
+        - name: favorite_id
+          in: path
+          description: "Идентификатор избранного товара"
+          required: true
+          type: integer
+          example: '1'
+        - name: Authorization
+          in: header
+          description: "Bearer-токен для аутентификации пользователя."
+          required: true
+          type: string
+          example: 'Bearer token'
+      responses:
+        200:
+          description: "Товар успешно удален"
+          schema:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: "Favorite deleted"
+        401:
+          description: "Неавторизованный доступ"
   /carts:
     get:
       tags:
