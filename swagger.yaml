@@ -900,7 +900,36 @@ paths:
                 $ref: '#/components/schemas/ShopAddress'
         401:
           description: "Неавторизованный доступ"
+  /search:
+    get:
+      tags:
+        - Поиск
+      summary: Поиск товаров и категорий
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Токен авторизации пользователя
+          required: true
+          type: string
+        - name: text
+          in: formData
+          description: Текст для поиска
+          required: true
+          type: string
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResult'
 
+        401:
+          description: Неавторизованный доступ
+        500:
+          description: Внутренняя ошибка сервера
 components:
   schemas:
     FavoriteResponse:
@@ -1277,3 +1306,18 @@ components:
           point:
             type: string
             description: "Координаты магазина в формате 'широта, долгота'"
+    SearchResult:
+      type: array
+      description: Результаты поиска (массив)
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: "Идентификатор"
+          type:
+            type: string
+            description: "Тип результата(category, product)"
+          name:
+            type: string
+            description: "Название"
