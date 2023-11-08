@@ -169,7 +169,144 @@ paths:
           description: Некорректный запрос
     security:
       - BearerAuth: []
-
+  /users/addresses/{:delivery_type}:
+    get:
+      summary: Получения адресов пользователя для доставки по разным типам
+      description:  Доступные типы 'post' - почта, 'courier' - курьер, 'service' - служба доставки
+      tags:
+        - Профиль пользователя
+      parameters:
+        - name: Authorization
+          in: header
+          description: Токен авторизации пользователя
+          required: true
+          type: string
+          example: 'Bearer token'
+      responses:
+        200:
+          description: Успешный запрос
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                delivery_type:
+                  type: string
+                country:
+                  type: string
+                city:
+                  type: string
+                street:
+                  type: string
+                house:
+                  type: string
+                apartment:
+                  type: string
+                zip_code:
+                  type: string
+        401:
+          description: Неавторизованный доступ
+        422:
+          description: Некорректный запрос
+  /users/addresses/:
+    post:
+      tags:
+        - Профиль пользователя
+      summary: Создать адрес пользователя
+      parameters:
+        - name: Authorization
+          in: header
+          description: Токен авторизации пользователя
+          required: true
+          type: string
+        - name: delivery_type
+          in: formData
+          description: Тип доставки (например, "post", "courier", "service")
+          required: true
+          type: string
+        - name: country
+          in: formData
+          description: Название страны
+          required: true
+          type: string
+        - name: city
+          in: formData
+          description: Название города
+          required: true
+          type: string
+        - name: street
+          in: formData
+          description: Название улицы
+          required: true
+          type: string
+        - name: house
+          in: formData
+          description: Номер дома
+          required: true
+          type: string
+        - name: apartment
+          in: formData
+          description: Номер квартиры
+          required: true
+          type: string
+        - name: zip_code
+          in: formData
+          description: Почтовый индекс. нужен только если delivery_type == 'post'
+          required: true
+          type: string
+      responses:
+        200:
+          description: Успешный запрос
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              delivery_type:
+                type: string
+              country:
+                type: string
+              city:
+                type: string
+              street:
+                type: string
+              house:
+                type: string
+              apartment:
+                type: string
+              zip_code:
+                type: string
+        401:
+          description: Неавторизованный доступ
+        422:
+          description: Некорректный запрос
+  /users/addresses/{address_id}:
+    delete:
+      tags:
+        - Профиль пользователя
+      summary: Удалить адрес пользователя
+      parameters:
+        - name: Authorization
+          in: header
+          description: Токен авторизации пользователя
+          required: true
+          type: string
+        - name: address_id
+          in: path
+          description: Идентификатор адреса для удаления
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Успешное удаление адреса
+        401:
+          description: Неавторизованный доступ
+        404:
+          description: Адрес не найден
+        500:
+          description: Внутренняя ошибка сервера
   /main:
     get:
       summary: Получение информации для главной страницы
