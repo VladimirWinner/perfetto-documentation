@@ -307,73 +307,32 @@ paths:
           description: Адрес не найден
         500:
           description: Внутренняя ошибка сервера
-  /main:
+  /events:
     get:
-      summary: Получение информации для главной страницы
-      description: Данные о товарах и акциях для главной страницы
+      summary: Получение данных о акция
+      description: Возвращает информацию о всех доступных акция и их товарах
       tags:
-        - Главная страница(в разработке)
+        - Акции
       responses:
         '200':
-          description: 'Успешный ответ'
+          description: Данные об акциях успешно получены
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MainPage'
-              examples:
-                example1:
-                  value:
-                    mainPage:
-                      banners:
-                        - id: 1
-                          title: 'Заголовок баннера'
-                          image: 'url_изображения_баннера'
-                          link: 'ссылка_баннера'
-                        - id: 2
-                          title: 'Другой баннер'
-                          image: 'url_изображения_другого_баннера'
-                          link: 'ссылка_другого_баннера'
-                      categories:
-                        - id: 1
-                          name: 'Категория 1'
-                          products:
-                            - id: 1
-                              name: 'Название продукта 1'
-                              description: 'Описание продукта 1'
-                              price: 19.99
-                              old_price: 29.99
-                              images: ['url_изображения_продукта_1_1', 'url_изображения_продукта_1_2']
-                              promotions:
-                                - id: 1
-                                  title: 'Акция 1'
-                                  description: 'Описание акции 1'
-                            - id: 2
-                              name: 'Название продукта 2'
-                              description: 'Описание продукта 2'
-                              price: 24.99
-                              old_price: 29.99
-                              images: ['url_изображения_продукта_2_1', 'url_изображения_продукта_2_2']
-                              promotions: [ ]
-                        - id: 2
-                          name: 'Категория 2'
-                          products:
-                            - id: 3
-                              name: 'Название продукта 3'
-                              description: 'Описание продукта 3'
-                              price: 14.99
-                              old_price: 19.99
-                              images: ['url_изображения_продукта_3_1', 'url_изображения_продукта_3_2']
-                              promotions:
-                                - id: 2
-                                  title: 'Акция 2'
-                                  description: 'Описание акции 2'
-                            - id: 4
-                              name: 'Название продукта 4'
-                              description: 'Описание продукта 4'
-                              price: 29.99
-                              old_price:
-                              image: 'url_изображения_продукта_4'
-                              promotions: [ ]
+                $ref: '#/components/schemas/EventProducts'
+  /banners:
+    get:
+      summary: Получение данных о баннерах
+      description: Возвращает информацию о всех доступных баннерах
+      tags:
+        - Баннеры
+      responses:
+        '200':
+          description: Данные о баннерах успешно получены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Banner'
   /categories:
     get:
       summary: Получение данных о категориях
@@ -499,6 +458,20 @@ paths:
                         thumb:
                           type: string
                           example: 'https://image.com/123/123/123'
+                  events:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Акция 1'
+                        color:
+                          type: string
+                          example: '#FFFF0'
               example:
                 id: 2
                 name: "Colombia Sumatara Dilla"
@@ -522,6 +495,20 @@ paths:
                 description: "test product"
                 article: "521236"
                 season: "Весна-Лето_ru"
+                events: [ { id: 1, name: 'Акция 1', color: '#FFFF0' }, { id: 2, name: 'Акция 2', color: '#FFFF0' } ]
+  /products/colors:
+    get:
+      tags:
+        - Информация о товаре
+      summary: Получение цветов товара и размеры
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ColorCard'
+
   /products/{product_id}/review_infos:
     get:
       tags:
@@ -999,6 +986,11 @@ components:
         season:
           type: string
           description: Сезон товара
+        events:
+          type: array
+          description: список акций в которые входит товар
+          items:
+            $ref: '#/components/schemas/Events'
     CardProduct:
       type: object
       properties:
@@ -1025,7 +1017,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductPhoto'
-
     Color:
       type: object
       properties:
@@ -1112,66 +1103,6 @@ components:
           type: string
           format: email
           description: Email пользователя
-
-    MainPage:
-      type: object
-      properties:
-        banners:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                description: Идентификатор баннера
-              title:
-                type: string
-                description: Текст на банере
-              image:
-                type: string
-                description: url изображения
-              link:
-                type: string
-                description: линка
-        categories:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-              name:
-                type: string
-              products:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
-                    description:
-                      type: string
-                    price:
-                      type: number
-                    old_price:
-                      type: number
-                    images:
-                      type: array
-                      items:
-                        type: string
-                    promotions:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                          title:
-                            type: string
-                          description:
-                            type: string
     Category:
       type: array
       items:
@@ -1180,6 +1111,8 @@ components:
           id:
             type: integer
           name:
+            type: string
+          image:
             type: string
     ReviewResponse:
       type: object
@@ -1321,3 +1254,72 @@ components:
           name:
             type: string
             description: "Название"
+    Events:
+        type: array
+        description: Список акций
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: "Идентификатор"
+            name:
+              type: string
+              description: "Название акции"
+            color:
+              type: string
+              description: "Цвет ярлыка акции"
+    EventProducts:
+      type: array
+      description: Список акций и товаров в них
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: "Идентификатор"
+          name:
+            type: string
+            description: "Название акции"
+          color:
+            type: string
+            description: "Цвет ярлыка акции"
+          products:
+            type: array
+            description: Товары
+            items:
+              $ref: '#/components/schemas/Product'
+    Banner:
+      type: array
+      description: Список баннеров
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: "Идентификатор"
+          type:
+            type: string
+            description: "Тип банера"
+          time:
+            type: string
+            description: "Время отображения"
+          url:
+            type: string
+
+#                    sizes:
+#          type: array
+#          description: Размеры товара (массив)
+#          items:
+#            $ref: '#/components/schemas/Size'
+    ColorCard:
+      type: object
+      properties:
+        id:
+          type: integer
+        color:
+          type: string
+        sizes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Size'
