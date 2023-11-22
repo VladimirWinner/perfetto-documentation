@@ -96,6 +96,18 @@ paths:
                 example1:
                   value:
                     error: 'Invalid code'
+  /logout:
+    post:
+      summary: Выход из системы.
+      description: Добавляет токены пользователя в черный список
+      tags:
+        - Аутентификация
+
+      responses:
+        '200':
+          description: 'Успешный ответ'
+      security:
+        - BearerAuth: [ ]
   /users:
     get:
       summary: Получение данных профиля пользователя
@@ -380,7 +392,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
+                type: object
+                properties:
+                  per_page:
+                    type: integer
+                    example: 10
+                  page:
+                    type: integer
+                    example: 1
+                  total_pages:
+                    type: integer
+                    example: 5
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
   /products/{product_id}:
     get:
       tags:
@@ -555,9 +581,21 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Review'
+                type: object
+                properties:
+                  per_page:
+                    type: integer
+                    example: 10
+                  page:
+                    type: integer
+                    example: 1
+                  total_pages:
+                    type: integer
+                    example: 5
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Review'
     post:
       tags:
         - Информация о товаре
@@ -663,7 +701,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
+                type: object
+                properties:
+                  per_page:
+                    type: integer
+                    example: 10
+                  page:
+                    type: integer
+                    example: 1
+                  total_pages:
+                    type: integer
+                    example: 5
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
     post:
       summary: 'Добавить товар в избранное'
       tags:
@@ -911,8 +963,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SearchResult'
-
+                type: object
+                properties:
+                  per_page:
+                    type: integer
+                    example: 10
+                  page:
+                    type: integer
+                    example: 1
+                  total_pages:
+                    type: integer
+                    example: 5
+                  items:
+                    $ref: '#/components/schemas/SearchResult'
         401:
           description: Неавторизованный доступ
         500:
