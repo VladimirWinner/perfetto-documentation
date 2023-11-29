@@ -320,9 +320,11 @@ paths:
         500:
           description: Внутренняя ошибка сервера
   /events:
+    tags:
+      - Акции
     get:
       summary: Получение данных о акция
-      description: Возвращает информацию о всех доступных акция и их товарах
+      description: Возвращает информацию о всех доступных акция и их товарах. Ограничение на отображение 4х товаров на акцию
       tags:
         - Акции
       responses:
@@ -332,6 +334,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EventProducts'
+  /events/:event_id:
+    get:
+      summary: Получение данных о товарах акции
+      description: Возвращает информацию о всех доступных товарах акции
+      tags:
+        - Акции
+      responses:
+        '200':
+          description: Данные о товарах акциии успешно получены
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  per_page:
+                    type: integer
+                    example: 10
+                  page:
+                    type: integer
+                    example: 1
+                  total_pages:
+                    type: integer
+                    example: 5
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
   /banners:
     get:
       summary: Получение данных о баннерах
@@ -358,7 +387,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Category'
-  /categories/{category_id}/:
+  /categories/{category_id}:
     get:
       summary: Получение данных о товарах в категориях
       description: Возвращает данные о товарах в категории
@@ -730,16 +759,10 @@ paths:
               properties:
                 product_id:
                   type: string
-                color_id:
-                  type: string
-                size_id:
-                  type: string
             examples:
               example1:
                 value:
                   product_id: '1'
-                  color_id: '1'
-                  size_id: '1'
       responses:
         '201':
           description: 'Успешный ответ'
@@ -751,9 +774,9 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: favorite_id
+        - name: product_id
           in: path
-          description: "Идентификатор избранного товара"
+          description: "Идентификатор товара"
           required: true
           type: integer
           example: '1'
@@ -1054,6 +1077,9 @@ components:
           description: список акций в которые входит товар
           items:
             $ref: '#/components/schemas/Events'
+        favorite:
+          type: boolean
+          description: Находится ли товар в избранном
     CardProduct:
       type: object
       properties:
@@ -1369,12 +1395,6 @@ components:
             description: "Время отображения"
           url:
             type: string
-
-#                    sizes:
-#          type: array
-#          description: Размеры товара (массив)
-#          items:
-#            $ref: '#/components/schemas/Size'
     ColorCard:
       type: object
       properties:
