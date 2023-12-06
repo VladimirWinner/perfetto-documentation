@@ -334,7 +334,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EventProducts'
-  /events/:event_id:
+  /events/{event_id}:
     get:
       summary: Получение данных о товарах акции
       description: Возвращает информацию о всех доступных товарах акции
@@ -447,110 +447,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    example: 2
-                  name:
-                    type: string
-                    example: "Colombia Sumatara Dilla"
-                  price:
-                    type: string
-                    example: "123.0"
-                  old_price:
-                    type: null
-                  current_color:
-                    properties:
-                      id:
-                        type: string
-                        example: "19"
-                      color:
-                        type: string
-                        example: "#FFFF0"
-                  sizes:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          example: "91"
-                        size:
-                          type: integer
-                          example: 43
-                  colors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          example: "19"
-                        color:
-                          type: string
-                          example: "#FFFF0"
-                  description:
-                    type: string
-                    example: "test product"
-                  article:
-                    type: string
-                    example: "521236"
-                  season:
-                    type: string
-                    example: "Весна-Лето_ru"
-                  photos:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        small_thumb:
-                          type: string
-                          example: 'https://image.com/123/123/123'
-                        original:
-                          type: string
-                          example: 'https://image.com/123/123/123'
-                        thumb:
-                          type: string
-                          example: 'https://image.com/123/123/123'
-                  events:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: 'Акция 1'
-                        color:
-                          type: string
-                          example: '#FFFF0'
-              example:
-                id: 2
-                name: "Colombia Sumatara Dilla"
-                price: "123.0"
-                old_price: "200.0"
-                sizes: [ { id: "91", size: 43 }, { id: "92", size: 44 }, { id: "93", size: 58 }, { id: "94", size: 53 }, { id: "95", size: 41 } ]
-                current_color:
-                  id: "19"
-                  color: "#FFFF0"
-                photos: [ {small_thumb: 'https://image.com/123/123/123', original: 'https://image.com/123/123/123', thumb: 'https://image.com/123/123/123'}, {small_thumb: 'https://image.com/321/321/321', original: 'https://image.com/321/321/321', thumb: 'https://image.com/321/321/321'}]
-                colors:
-                    - { id: "11", color: "#FFFF0" }
-                    - { id: "13", color: "#FFFF0" }
-                    - { id: "14", color: "#FFFF0" }
-                    - { id: "12", color: "#FFFF0" }
-                    - { id: "17", color: "#FFFF0" }
-                    - { id: "18", color: "#FFFF0" }
-                    - { id: "20", color: "#FFFF0" }
-                    - { id: "16", color: "#FFFF0" }
-                    - { id: "15", color: "#FFFF0" }
-                description: "test product"
-                article: "521236"
-                season: "Весна-Лето_ru"
-                events: [ { id: 1, name: 'Акция 1', color: '#FFFF0' }, { id: 2, name: 'Акция 2', color: '#FFFF0' } ]
+                $ref: '#/components/schemas/Product'
   /products/colors:
     get:
       tags:
@@ -1080,6 +977,9 @@ components:
         favorite:
           type: boolean
           description: Находится ли товар в избранном
+        cart:
+          type: boolean
+          description: Находится ли товар в корзине
     CardProduct:
       type: object
       properties:
