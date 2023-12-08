@@ -718,7 +718,33 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CartItem'
+                type: object
+                properties:
+                  per_page:
+                    type: integer
+                    example: 10
+                  page:
+                    type: integer
+                    example: 1
+                  total_pages:
+                    type: integer
+                    example: 5
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CartItem'
+                  init_price:
+                    type: integer
+                    example: 300
+                  user_discount:
+                    type: integer
+                    example: 10
+                  discount_price:
+                    type: integer
+                    example: 30
+                  total_price:
+                    type: integer
+                    example: 270
         401:
           description: "Неавторизованный доступ"
     post:
