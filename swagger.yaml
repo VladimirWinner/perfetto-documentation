@@ -1346,12 +1346,28 @@ components:
       items:
         type: object
         properties:
-          name:
+          city:
             type: string
-            description: "Название магазина или улицы"
-          point:
-            type: string
-            description: "Координаты магазина в формате 'широта, долгота'"
+            description: город
+            example: "Алматы"
+          addresses:
+            type: array
+            items:
+              type: object
+              properties:
+                street:
+                  type: string
+                  example: "Жандосова 11"
+                description:
+                  type: string
+                  example: "Ежедневно с 10:00 - 20:00"
+                point1:
+                  type: string
+                  example: "43.233886"
+                point2:
+                  type: string
+                  example: "76.903774"
+
     SearchResult:
       type: array
       description: Результаты поиска (массив)
