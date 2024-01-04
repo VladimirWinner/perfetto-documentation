@@ -790,6 +790,42 @@ paths:
           description: "Товар успешно добавлен в корзину"
         401:
           description: "Неавторизованный доступ"
+    delete:
+      tags:
+        - Корзина товаров
+      summary: "Удалить корзину"
+      description: "Удалить корзину пользователя с использованием авторизации."
+      produces:
+        - application/json
+      parameters:
+        - name: carts_id
+          in: formData
+          description: "Идентификаторы корзины"
+          required: true
+          type: Array
+          example: [ 1, 2, 3 ]
+        - name: Authorization
+          in: header
+          description: "Bearer-токен для аутентификации пользователя."
+          required: true
+          type: string
+          example: 'Bearer token'
+      responses:
+        200:
+          description: "Корзина успешно удалена"
+          schema:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: "Cart deleted"
+        401:
+          description: "Неавторизованный доступ"
+        404:
+          description: "Одна или все корзины не найдены"
 
   /carts/{cart_id}:
     put:
@@ -827,40 +863,7 @@ paths:
                 $ref: '#/components/schemas/CartItem'
         401:
           description: "Неавторизованный доступ"
-    delete:
-      tags:
-        - Корзина товаров
-      summary: "Удалить корзину"
-      description: "Удалить корзину пользователя с использованием авторизации."
-      produces:
-        - application/json
-      parameters:
-        - name: cart_id
-          in: path
-          description: "Идентификатор корзины"
-          required: true
-          type: integer
-          example: '1'
-        - name: Authorization
-          in: header
-          description: "Bearer-токен для аутентификации пользователя."
-          required: true
-          type: string
-          example: 'Bearer token'
-      responses:
-        200:
-          description: "Корзина успешно удалена"
-          schema:
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                      example: "Cart deleted"
-        401:
-          description: "Неавторизованный доступ"
+
   /shop_addresses:
     get:
       tags:
@@ -926,6 +929,101 @@ paths:
           description: Неавторизованный доступ
         500:
           description: Внутренняя ошибка сервера
+  /orders:
+    get:
+      tags:
+        - Заказы
+      summary: 'Заказы пользователя'
+      description: 'Возвращает список заказов пользователя'
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: "Bearer-токен для аутентификации пользователя."
+          required: true
+          type: string
+          example: 'Bearer token'
+      responses:
+        200:
+          description: "Успешный ответ"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+    post:
+      tags:
+        - Заказы
+      summary: 'Создание заказа пользователя'
+      description: 'Создание заказа'
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: "Bearer-токен для аутентификации пользователя."
+          required: true
+          type: string
+          example: 'Bearer token'
+        - name: carts_ids
+          in: formData
+          description: 'Массив идентификаторов корзин'
+          required: true
+          type: Array
+        - name: payment_method
+          in: formData
+          description: 'Метод оплаты'
+          required: true
+          type: integer
+        - name: address_id
+          in: formData
+          description: 'Адрес доставки товара'
+          required: true
+          type:
+        - name: discount
+          in: formData
+          description: 'Количество бонусов'
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Успешный ответ"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+  /orders/{:order_id}:
+    get:
+      tags:
+        - Заказы
+      summary: 'Информация об одном заказе пользователя'
+      description: 'Возвращает информацию о заказу пользователя'
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: "Bearer-токен для аутентификации пользователя."
+          required: true
+          type: string
+          example: 'Bearer token'
+        - name: order_id
+          in: path
+          description: Идентификатор заказа
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Успешный ответ"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
 components:
   schemas:
     FavoriteResponse:
@@ -1332,3 +1430,62 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Size'
+    Order:
+
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        status:
+          type: string
+          example: "Ожидает оплаты"
+        amount:
+          type: integer
+          example: 15000
+        discount:
+          type: integer
+          example: 0
+        total_amount:
+          type: integer
+          example: 18000
+        delivery_phone:
+          type: string
+          example: "+1234567890"
+        delivery_name:
+          type: string
+          example: "John Doe"
+        delivery_price:
+          type: integer
+          example: 3000
+        old_price_amount:
+          type: integer
+          example: 20000
+        delivery_city:
+          type: string
+          example: 'Алматы'
+        delivery_street:
+          type: string
+          example: "Назарбаева"
+        delivery_house":
+          type: string
+          example: "1"
+        delivery_apartment:
+          type: string
+          example: "1"
+        delivery_zip_code:
+          type: string
+          example: "123213123"
+        delivery_method:
+          type: string
+          example: "post"
+        payment_method:
+          type: string
+          example: "Банковская карта"
+        order_items:
+          type: integer
+          example: 1
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
